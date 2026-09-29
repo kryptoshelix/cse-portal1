@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use App\Models\User;
+
 enum UserRole: string
 {
     case Student = 'student';
@@ -32,6 +34,17 @@ enum UserRole: string
             self::Faculty => 'Faculty',
             self::DeptAdmin => 'Department Administrator',
             self::SuperAdmin => 'Super Administrator',
+        };
+    }
+
+    /** Single source of truth for role-aware redirects (never send everyone to admin). */
+    public static function dashboardRoute(?User $user = null): ?string
+    {
+        return match ($user?->role ?? null) {
+            self::Student => route('student.dashboard'),
+            self::Faculty => route('faculty.dashboard'),
+            self::DeptAdmin, self::SuperAdmin => route('admin.dashboard'),
+            default => null,
         };
     }
 }

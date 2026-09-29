@@ -1,0 +1,94 @@
+/* CSE Department Portal — custom design layer on top of Bootstrap 5.3 */
+:root {
+  --cse-primary: #14365d;      /* deep academic navy   */
+  --cse-primary-600: #1c4a7e;
+  --cse-accent: #b98a2f;       /* muted brass accent   */
+  --cse-bg: #f6f8fb;
+  --cse-border: #e3e8ef;
+}
+
+body { background: var(--cse-bg); color: #212529; }
+
+a { color: var(--cse-primary); }
+a:hover { color: var(--cse-primary-600); }
+
+/* ---------- Public navbar / hero ---------- */
+.navbar-cse { background: var(--cse-primary); }
+.navbar-cse .navbar-brand { color: #fff; font-weight: 700; letter-spacing: .2px; }
+.navbar-cse .navbar-brand .brand-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 8px; margin-right: .6rem;
+  background: var(--cse-accent); color: #fff; font-weight: 800;
+}
+.navbar-cse .nav-link { color: rgba(255,255,255,.82); }
+.navbar-cse .nav-link:hover, .navbar-cse .nav-link.active { color: #fff; }
+
+.hero {
+  background: linear-gradient(135deg, var(--cse-primary) 0%, #0d2440 60%, #123a5e 100%);
+  color: #fff; padding: 4.5rem 0 4rem;
+}
+.hero h1 { font-weight: 800; }
+.hero .lead { color: rgba(255,255,255,.85); }
+
+.section-title { position: relative; padding-bottom: .5rem; margin-bottom: 1.25rem; font-weight: 700; color: var(--cse-primary); }
+.section-title::after { content: ""; position: absolute; left: 0; bottom: 0; width: 56px; height: 3px; background: var(--cse-accent); border-radius: 2px; }
+
+.stat-card { border: 0; border-top: 3px solid var(--cse-accent); box-shadow: 0 1px 3px rgba(16,24,40,.08); }
+.stat-card .stat-value { font-size: 2rem; font-weight: 800; color: var(--cse-primary); }
+
+.card { border-color: var(--cse-border); box-shadow: 0 1px 3px rgba(16,24,40,.06); }
+.card-header { background: #fff; border-bottom-color: var(--cse-border); font-weight: 600; }
+
+.badge-status-draft { background:#6c757d; }
+.badge-status-pending { background:#b98a2f; }
+.badge-status-rejected { background:#b02a37; }
+.badge-status-approved { background:#0f5132; }
+.badge-status-published { background:#198754; }
+
+.footer-cse { background: var(--cse-primary); color: rgba(255,255,255,.8); }
+.footer-cse a { color: #fff; text-decoration: none; opacity:.85; }
+.footer-cse a:hover { opacity: 1; text-decoration: underline; }
+
+/* ---------- Portal (student/faculty) layout ---------- */
+.portal-shell { display: flex; min-height: calc(100vh - 56px); }
+.portal-sidebar {
+  width: 240px; flex: 0 0 240px; background: var(--cse-primary); color: #fff; padding: 1rem .75rem;
+}
+.portal-sidebar .nav-link { color: rgba(255,255,255,.8); border-radius: .45rem; padding: .55rem .8rem; margin-bottom: .15rem; }
+.portal-sidebar .nav-link:hover { background: rgba(255,255,255,.08); color:#fff; }
+.portal-sidebar .nav-link.active { background: var(--cse-accent); color: #fff; font-weight: 600; }
+.portal-sidebar .sidebar-heading { font-size:.72rem; text-transform: uppercase; letter-spacing:.08em; color: rgba(255,255,255,.5); padding: .75rem .8rem .25rem; }
+.portal-main { flex: 1; min-width: 0; }
+
+@media (max-width: 991.98px) {
+  .portal-shell { flex-direction: column; }
+  .portal-sidebar { width: 100%; flex: none; }
+  .portal-sidebar .nav { flex-direction: row; flex-wrap: wrap; }
+  .portal-sidebar .nav-link { margin-right: .25rem; }
+}
+
+/* ---------- Admin layout ---------- */
+.admin-body { background: #eef1f6; }
+.admin-navbar { background: var(--cse-primary); }
+.admin-navbar .navbar-brand, .admin-navbar .nav-link { color: #fff; }
+.admin-sidebar {
+  width: 250px; flex: 0 0 250px; background: #10233c; color: #fff;
+  padding: 1rem .75rem; min-height: calc(100vh - 58px);
+}
+.admin-sidebar .nav-link { color: rgba(255,255,255,.75); border-radius: .45rem; padding: .5rem .75rem; margin-bottom: .1rem; font-size: .95rem;}
+.admin-sidebar .nav-link:hover { background: rgba(255,255,255,.07); color: #fff; }
+.admin-sidebar .nav-link.active { background: var(--cse-accent); color: #fff; font-weight: 600; }
+.admin-sidebar .nav-section { font-size:.7rem; text-transform: uppercase; letter-spacing:.09em; color: rgba(255,255,255,.45); padding:.9rem .75rem .25rem; }
+@media (max-width: 991.98px) {
+  .admin-shell { flex-direction: column; }
+  .admin-sidebar { width: 100%; flex:none; min-height:0; }
+  .admin-sidebar .nav { flex-direction: row; flex-wrap: wrap; }
+}
+
+.table thead { background: #f1f4f9; }
+.required::after { content:" *"; color:#b02a37; }
+
+:focus-visible { outline: 3px solid rgba(185,138,47,.6); outline-offset: 2px; }
+
+.skip-link { position:absolute; left:-9999px; top:0; background:#fff; padding:.5rem 1rem; z-index:2000; }
+.skip-link:focus { left: 8px; }

@@ -36,7 +36,7 @@ class ProfileController extends Controller
             $faculty->fill($request->only('designation', 'specialization', 'qualification', 'bio'))->save();
         }
 
-        return back()->with('success', 'Profile updated.');
+        return back()->with('status', 'Profile updated.');
     }
 
     public function changePassword(ChangePasswordRequest $request)
@@ -50,6 +50,6 @@ class ProfileController extends Controller
         $user->forceFill(['password' => $request->input('new_password')])->save();
         $request->session()->regenerate();
 
-        return back()->with('success', 'Password changed successfully.');
+        return back()->with('status', 'Password changed successfully.');
     }
 }

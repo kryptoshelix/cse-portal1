@@ -76,7 +76,7 @@ class AchievementController extends Controller
 
         $this->audit->log('achievement.created', "Admin created achievement #{$achievement->id}", $achievement);
 
-        return redirect()->route('admin.achievements.show', $achievement)->with('success', 'Achievement created.');
+        return redirect()->route('admin.achievements.show', $achievement)->with('status', 'Achievement created.');
     }
 
     public function show(Achievement $achievement)
@@ -113,7 +113,7 @@ class AchievementController extends Controller
 
         $this->audit->log('achievement.updated', "Admin updated achievement #{$achievement->id}", $achievement);
 
-        return redirect()->route('admin.achievements.show', $achievement)->with('success', 'Achievement updated.');
+        return redirect()->route('admin.achievements.show', $achievement)->with('status', 'Achievement updated.');
     }
 
     public function review(AchievementReviewRequest $request, Achievement $achievement)
@@ -123,12 +123,12 @@ class AchievementController extends Controller
         if ($request->input('decision') === 'approve') {
             $this->workflow->approve($achievement, $reviewer);
 
-            return back()->with('success', 'Submission approved. It can now be published.');
+            return back()->with('status', 'Submission approved. It can now be published.');
         }
 
         $this->workflow->reject($achievement, $reviewer, (string) $request->input('rejection_feedback'));
 
-        return back()->with('success', 'Submission rejected and the applicant has been given feedback.');
+        return back()->with('status', 'Submission rejected and the applicant has been given feedback.');
     }
 
     public function publish(Achievement $achievement)
@@ -136,14 +136,14 @@ class AchievementController extends Controller
         $this->authorize('publish', $achievement);
         $this->workflow->publish($achievement, Auth::user());
 
-        return back()->with('success', 'Achievement is now publicly visible.');
+        return back()->with('status', 'Achievement is now publicly visible.');
     }
 
     public function unpublish(Achievement $achievement)
     {
         $this->workflow->unpublish($achievement, Auth::user());
 
-        return back()->with('success', 'Achievement removed from the public site.');
+        return back()->with('status', 'Achievement removed from the public site.');
     }
 
     public function destroy(Achievement $achievement)
@@ -151,6 +151,6 @@ class AchievementController extends Controller
         $achievement->delete();
         $this->audit->log('achievement.deleted', "Achievement #{$achievement->id} deleted", $achievement);
 
-        return redirect()->route('admin.achievements.index')->with('success', 'Achievement deleted.');
+        return redirect()->route('admin.achievements.index')->with('status', 'Achievement deleted.');
     }
 }

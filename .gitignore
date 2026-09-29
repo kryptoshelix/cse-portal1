@@ -1,28 +1,15 @@
-# Laravel/PHP
-/vendor/
-/node_modules/
+# Laravel/PHP specific
+.phpunit.result.cache
 
-# Environment
+# Dependencies (vendor)
+/vendor/
+
+# Environment files
 .env
 .env.local
-*.env.*
-!.env.example
+.env.*.local
 
-# Build artifacts
-/public/build/
-/public/hot
-/storage/*.key
-/bootstrap/cache/*
-!/bootstrap/cache/.gitignore
-
-# Logs and temp files
-/storage/logs/*
-!/storage/logs/.gitignore
-*.log
-/tmp/
-
-# Editor/IDE
-.idea/
-.vscode/
-*.swp
-*.swo
+# Logs and cache
+/storage/logs/*.log
+/bootstrap/cache/*.php
+/public/storage
