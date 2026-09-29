@@ -40,6 +40,7 @@ abstract class TestCase extends BaseTestCase
         } elseif ($role === UserRole::Faculty) {
             DB::table('faculty')->insert([
                 'user_id' => $user->id,
+                'employee_id' => 'EMP'.fake()->unique()->numberBetween(10000, 99999),
                 'designation' => 'Assistant Professor',
                 'specialization' => 'Computer Science',
                 'created_at' => now(),
