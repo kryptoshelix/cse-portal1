@@ -1,0 +1,28 @@
+# Laravel/PHP
+/vendor/
+/node_modules/
+
+# Environment
+.env
+.env.local
+*.env.*
+!.env.example
+
+# Build artifacts
+/public/build/
+/public/hot
+/storage/*.key
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+
+# Logs and temp files
+/storage/logs/*
+!/storage/logs/.gitignore
+*.log
+/tmp/
+
+# Editor/IDE
+.idea/
+.vscode/
+*.swp
+*.swo
