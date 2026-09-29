@@ -80,7 +80,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('caption')->nullable();
-            $table->string('image_path');
+            $table->string('image_path')->nullable();
             $table->date('taken_on')->nullable();
             $table->boolean('is_published')->default(false);
             $table->timestamp('published_at')->nullable();

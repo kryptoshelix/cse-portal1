@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         $this->categories();
         $admins = $this->adminAccounts();
         $facultyUsers = $this->facultyAccounts(6);
-        $facultyRecords = Faculty::whereIn('user_id', collect($facultyUsers)->pluck('id'))->get();
+        $facultyRecords = Faculty::whereIn('user_id', collect($facultyUsers)->pluck('id'))->get()->all();
         $students = $this->studentAccounts(12);
         $this->achievements($facultyUsers, $students);
         $this->content($facultyRecords, $admins);
