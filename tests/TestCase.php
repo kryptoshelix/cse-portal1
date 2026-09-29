@@ -65,7 +65,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function makeAchievement(User $owner, string $status = 'draft', array $extra = []): Achievement
     {
-        $a = Achievement::create(array_merge([
+        $a = new Achievement(array_merge([
             'title' => 'Test Achievement '.Str::random(6),
             'description' => 'A test description long enough to pass validation.',
             'achievement_category_id' => $this->category()->id,
@@ -75,10 +75,26 @@ abstract class TestCase extends BaseTestCase
             'public_display_consent' => true,
         ], $extra));
 
-        // Ownership is privileged: set via forceFill, mirroring server-side assignment.
-        $a->forceFill(['owner_user_id' => $owner->id, 'created_by' => $owner->id])->save();
-        $a->forceFill(['status' => $status])->save();
+        // Ownership/status are privileged: set via forceFill, mirroring the
+        // server-side assignment controllers perform after authorization.
+        $a->forceFill([
+            'owner_user_id' => $owner->id,
+            'created_by' => $owner->id,
+            'status' => $status,
+        ])->save();
 
         return $a->fresh();
+    }
+
+    /**
+     * Test helper: persist a model row with privileged columns (is_published,
+     * published_at) that are intentionally NOT in $fillable. Mirrors the
+     * forceFill usage inside controllers after authorization.
+     */
+    protected function force(\Illuminate\Database\Eloquent\Model $model, array $attributes): \Illuminate\Database\Eloquent\Model
+    {
+        $model->forceFill($attributes)->save();
+
+        return $model;
     }
 }

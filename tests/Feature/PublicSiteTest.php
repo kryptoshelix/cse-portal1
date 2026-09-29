@@ -29,7 +29,7 @@ class PublicSiteTest extends TestCase
     {
         $student = $this->makeUser(\App\Enums\UserRole::Student);
         $published = $this->makeAchievement($student, 'published');
-        $published->forceFill(['is_published' => true, 'published_at' => now()])->save();
+        $published->forceFill(['status' => 'published', 'published_at' => now()])->save();
         $draft = $this->makeAchievement($student, 'draft');
         $approvedNotPublished = $this->makeAchievement($student, 'approved');
 
@@ -50,14 +50,10 @@ class PublicSiteTest extends TestCase
 
     public function test_unpublished_news_and_activities_hidden(): void
     {
-        News::create(['title' => 'Visible News Item', 'slug' => 'visible-news', 'body' => 'x',
-            'is_published' => true, 'published_at' => now()]);
-        News::create(['title' => 'Secret News Item', 'slug' => 'secret-news', 'body' => 'x',
-            'is_published' => false]);
-        Activity::create(['title' => 'Public Event', 'slug' => 'public-event', 'description' => 'x',
-            'is_published' => true, 'published_at' => now()]);
-        Activity::create(['title' => 'Private Event', 'slug' => 'private-event', 'description' => 'x',
-            'is_published' => false]);
+        $this->force(new News, ['slug' => 'visible-news', 'heading' => 'Visible News Item', 'is_published' => true, 'published_at' => now()]);
+        $this->force(new News, ['slug' => 'secret-news', 'heading' => 'Secret News Item']);
+        $this->force(new Activity, ['slug' => 'public-event', 'start_date' => now()->toDateString(), 'title' => 'Public Event', 'is_published' => true, 'published_at' => now()]);
+        $this->force(new Activity, ['slug' => 'private-event', 'start_date' => now()->toDateString(), 'title' => 'Private Event']);
 
         $this->get('/news')->assertOk()->assertSee('Visible News Item')->assertDontSee('Secret News Item');
         $this->get('/news/visible-news')->assertOk();
@@ -99,7 +95,7 @@ class PublicSiteTest extends TestCase
     {
         $student = $this->makeUser(\App\Enums\UserRole::Student);
         $a = $this->makeAchievement($student, 'published');
-        $a->forceFill(['is_published' => true, 'published_at' => now()])->save();
+        $a->forceFill(['status' => 'published', 'published_at' => now()])->save();
 
         $this->get('/achievements/'.$a->id)
             ->assertOk()
