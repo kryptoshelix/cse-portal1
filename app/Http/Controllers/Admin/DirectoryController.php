@@ -66,12 +66,11 @@ class DirectoryController extends Controller
         ]);
 
         DB::transaction(function () use ($data) {
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => DB::raw('NULL'), // placeholder replaced below
-            ]);
-            // Admin-provisioned account: active immediately, no usable password until reset.
+            $user = new User(['name' => $data['name'], 'email' => $data['email']]);
+            // Admin-provisioned account: active immediately, no usable password
+            // until the user completes a password reset (random unusable hash).
+            $user->password = bin2hex(random_bytes(32));
+            $user->save();
             $user->forceFill(['role' => UserRole::Student, 'status' => AccountStatus::Active])->save();
             Student::create([
                 'user_id' => $user->id,

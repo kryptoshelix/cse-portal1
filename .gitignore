@@ -1,15 +1,1 @@
-# Laravel/PHP specific
-.phpunit.result.cache
-
-# Dependencies (vendor)
-/vendor/
-
-# Environment files
-.env
-.env.local
-.env.*.local
-
-# Logs and cache
-/storage/logs/*.log
-/bootstrap/cache/*.php
-/public/storage
+(empty)
