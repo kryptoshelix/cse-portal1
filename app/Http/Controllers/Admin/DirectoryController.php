@@ -47,7 +47,7 @@ class DirectoryController extends Controller
         $student->update($data);
         $this->audit->log('student.updated', "Student profile #{$student->id} updated", $student);
 
-        return back()->with('success', 'Student record updated.');
+        return back()->with('status', 'Student record updated.');
     }
 
     public function createStudent(Request $request)
@@ -66,12 +66,11 @@ class DirectoryController extends Controller
         ]);
 
         DB::transaction(function () use ($data) {
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => DB::raw('NULL'), // placeholder replaced below
-            ]);
-            // Admin-provisioned account: active immediately, no usable password until reset.
+            $user = new User(['name' => $data['name'], 'email' => $data['email']]);
+            // Admin-provisioned account: active immediately, no usable password
+            // until the user completes a password reset (random unusable hash).
+            $user->password = bin2hex(random_bytes(32));
+            $user->save();
             $user->forceFill(['role' => UserRole::Student, 'status' => AccountStatus::Active])->save();
             Student::create([
                 'user_id' => $user->id,
@@ -82,7 +81,7 @@ class DirectoryController extends Controller
             $this->audit->log('student.created', "Student account #{$user->id} provisioned by admin", $user);
         });
 
-        return redirect()->route('admin.students.index')->with('success', 'Student created. Share password-reset instructions with them.');
+        return redirect()->route('admin.students.index')->with('status', 'Student created. Share password-reset instructions with them.');
     }
 
     public function facultyIndex(Request $request)
@@ -109,6 +108,6 @@ class DirectoryController extends Controller
         $faculty->update($data);
         $this->audit->log('faculty.updated', "Faculty profile #{$faculty->id} updated", $faculty);
 
-        return back()->with('success', 'Faculty record updated.');
+        return back()->with('status', 'Faculty record updated.');
     }
 }

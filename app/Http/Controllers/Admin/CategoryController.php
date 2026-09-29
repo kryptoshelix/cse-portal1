@@ -38,7 +38,7 @@ class CategoryController extends Controller
         ]);
         $this->audit->log('category.created', "Category #{$category->id} created", $category);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Category created.');
+        return redirect()->route('admin.categories.index')->with('status', 'Category created.');
     }
 
     public function edit(AchievementCategory $category)
@@ -51,7 +51,7 @@ class CategoryController extends Controller
         $category->update(['name' => $request->input('name'), 'description' => $request->input('description')]);
         $this->audit->log('category.updated', "Category #{$category->id} updated", $category);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Category updated.');
+        return redirect()->route('admin.categories.index')->with('status', 'Category updated.');
     }
 
     public function destroy(AchievementCategory $category)
@@ -62,6 +62,6 @@ class CategoryController extends Controller
         $category->delete();
         $this->audit->log('category.deleted', "Category #{$category->id} deleted");
 
-        return back()->with('success', 'Category deleted.');
+        return back()->with('status', 'Category deleted.');
     }
 }

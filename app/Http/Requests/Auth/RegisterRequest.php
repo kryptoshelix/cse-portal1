@@ -4,6 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
@@ -23,9 +24,9 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users,email'],
+            'email' => ['required', 'string', 'email:rfc,filter', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Password::min(8)],
-            'account_type' => ['required', 'in:'.implode(',', UserRole::registrable())],
+            'account_type' => ['required', Rule::in(UserRole::registrable())],
             'roll_number' => ['required_if:account_type,student', 'nullable', 'string', 'max:50', 'unique:students,roll_number'],
             'employee_id' => ['required_if:account_type,faculty', 'nullable', 'string', 'max:50', 'unique:faculty,employee_id'],
             'program' => ['nullable', 'string', 'max:100'],

@@ -75,11 +75,11 @@ class AchievementController extends Controller
             $this->workflow->submit($achievement, $user);
 
             return redirect()->route($this->portal($request).'.achievements.index')
-                ->with('success', 'Achievement submitted for review.');
+                ->with('status', 'Achievement submitted for review.');
         }
 
         return redirect()->route($this->portal($request).'.achievements.show', $achievement)
-            ->with('success', 'Draft saved. You can submit it for review when ready.');
+            ->with('status', 'Draft saved. You can submit it for review when ready.');
     }
 
     public function show(Request $request, Achievement $achievement)
@@ -122,11 +122,11 @@ class AchievementController extends Controller
             $this->workflow->submit($achievement->fresh(), $user);
 
             return redirect()->route($this->portal($request).'.achievements.index')
-                ->with('success', 'Achievement resubmitted for review.');
+                ->with('status', 'Achievement resubmitted for review.');
         }
 
         return redirect()->route($this->portal($request).'.achievements.show', $achievement)
-            ->with('success', 'Changes saved.');
+            ->with('status', 'Changes saved.');
     }
 
     public function submitForReview(Request $request, Achievement $achievement)
@@ -134,7 +134,7 @@ class AchievementController extends Controller
         $this->authorize('submit', $achievement);
         $this->workflow->submit($achievement, Auth::user());
 
-        return back()->with('success', 'Achievement submitted for review.');
+        return back()->with('status', 'Achievement submitted for review.');
     }
 
     public function destroy(Request $request, Achievement $achievement)
@@ -143,7 +143,7 @@ class AchievementController extends Controller
         $achievement->delete();
 
         return redirect()->route($this->portal($request).'.achievements.index')
-            ->with('success', 'Draft deleted.');
+            ->with('status', 'Draft deleted.');
     }
 
     private function createRecord(AchievementRequest $request, $user): Achievement

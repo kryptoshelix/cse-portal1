@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Enums\AccountStatus;
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class LoginController extends Controller
     public function show()
     {
         if ($user = Auth::user()) {
-            return redirect()->route($user->dashboardRoute());
+            return redirect(UserRole::dashboardRoute($user) ?? route('home'));
         }
 
         return view('auth.login');
@@ -62,7 +63,7 @@ class LoginController extends Controller
             throw ValidationException::withMessages(['email' => $message]);
         }
 
-        return redirect()->intended(route($user->dashboardRoute()));
+        return redirect()->intended(UserRole::dashboardRoute($user) ?? route('home'));
     }
 
     public function logout(Request $request)

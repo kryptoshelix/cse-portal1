@@ -74,7 +74,7 @@ class AccountController extends Controller
         $this->audit->log('account.status_changed', "Account #{$user->id} status: {$old} -> {$new->value}", $user,
             ['before' => $old, 'after' => $new->value]);
 
-        return back()->with('success', "Account updated to “{$new->value}”.");
+        return back()->with('status', "Account updated to “{$new->value}”.");
     }
 
     public function setRole(Request $request, User $user)
@@ -104,7 +104,7 @@ class AccountController extends Controller
         $this->audit->log('account.role_changed', "Account #{$user->id} role: {$old} -> {$new->value}", $user,
             ['before' => $old, 'after' => $new->value]);
 
-        return back()->with('success', 'Role updated.');
+        return back()->with('status', 'Role updated.');
     }
 
     public function setReviewFlag(Request $request, User $user)
@@ -117,7 +117,7 @@ class AccountController extends Controller
         $this->audit->log('account.review_permission_changed',
             "Account #{$user->id} review permission set to ".($flag ? 'granted' : 'revoked'), $user);
 
-        return back()->with('success', 'Review permission updated.');
+        return back()->with('status', 'Review permission updated.');
     }
 
     public function auditLogs(Request $request)

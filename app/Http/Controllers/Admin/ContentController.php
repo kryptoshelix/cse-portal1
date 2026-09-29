@@ -112,7 +112,7 @@ class ContentController extends Controller
 
         $this->audit->log("{$module}.created", ucfirst(rtrim($module, 's'))." #{$item->id} created", $item);
 
-        return redirect()->route('admin.'.$module.'.index')->with('success', 'Record created (unpublished by default).');
+        return redirect()->route('admin.'.$module.'.index')->with('status', 'Record created (unpublished by default).');
     }
 
     public function edit(string $module, $id)
@@ -148,7 +148,7 @@ class ContentController extends Controller
 
         $this->audit->log("{$module}.updated", ucfirst(rtrim($module, 's'))." #{$item->id} updated", $item);
 
-        return redirect()->route('admin.'.$module.'.index')->with('success', 'Record updated.');
+        return redirect()->route('admin.'.$module.'.index')->with('status', 'Record updated.');
     }
 
     public function publish(string $module, $id)
@@ -160,7 +160,7 @@ class ContentController extends Controller
         $item->forceFill(['is_published' => true, 'published_at' => now()])->save();
         $this->audit->log("{$module}.published", "Published {$module} #{$id}", $item);
 
-        return back()->with('success', 'Record published to the website.');
+        return back()->with('status', 'Record published to the website.');
     }
 
     public function unpublish(string $module, $id)
@@ -172,7 +172,7 @@ class ContentController extends Controller
         $item->forceFill(['is_published' => false, 'published_at' => null])->save();
         $this->audit->log("{$module}.unpublished", "Unpublished {$module} #{$id}", $item);
 
-        return back()->with('success', 'Record removed from the website.');
+        return back()->with('status', 'Record removed from the website.');
     }
 
     public function destroy(string $module, $id)
@@ -188,7 +188,7 @@ class ContentController extends Controller
         $item->delete();
         $this->audit->log("{$module}.deleted", "Deleted {$module} #{$id}");
 
-        return redirect()->route('admin.'.$module.'.index')->with('success', 'Record deleted.');
+        return redirect()->route('admin.'.$module.'.index')->with('status', 'Record deleted.');
     }
 
     /** Re-encode images via GD to strip embedded payloads; random filename. */
